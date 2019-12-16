@@ -30,6 +30,8 @@ export default new Vuex.Store({
         v.attributes.id = v.id;
         v.attributes.tag_ids = v.relationships.tags.data.map(t => t.id);
       });
+      console.log(videos.map(v => v.attributes));
+
       commit(
         "SET_VIDEOS",
         videos.map(v => v.attributes)

@@ -3,6 +3,9 @@
 <template>
   <div class="home">
     <h1 class="heading-1">Videos</h1>
+    <div v-for="tag in tags" :key="tag.name">
+      {{ tag.name }}
+    </div>
     <div class="video-container">
       <router-link
         v-for="video in videos"
@@ -30,6 +33,9 @@ export default {
   computed: {
     videos() {
       return this.$store.state.videos;
+    },
+    tags() {
+      return this.$store.state.tags;
     }
   },
   filters: {
