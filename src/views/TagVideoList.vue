@@ -35,7 +35,7 @@ export default {
   padding-top: 3rem;
 
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, auto));
+  grid-template-columns: repeat(auto-fit, minmax(260px, auto));
   gap: 2rem;
   justify-content: left;
 }

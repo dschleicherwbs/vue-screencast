@@ -70,7 +70,7 @@ export default {
   border-radius: var(--br-m);
   border: 2px solid transparent;
   position: relative;
-  max-width: 300px;
+  max-width: 330px;
   transition: transform 510ms ease-out, border 2s ease-out;
 
   display: flex;
