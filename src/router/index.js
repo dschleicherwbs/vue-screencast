@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import VideoWatch from "../views/VideoWatch.vue";
+import TagVideoList from "../views/TagVideoList.vue";
 
 Vue.use(VueRouter);
 
@@ -21,9 +22,15 @@ const routes = [
       import(/* WebpackChunkName: "about" */ "../views/About.vue")
   },
   {
-    path: "/video/:id?",
+    path: "/video/:id",
     name: "video-watch",
     component: VideoWatch,
+    params: true
+  },
+  {
+    path: "/tag/:id",
+    name: "tag",
+    component: TagVideoList,
     params: true
   }
 ];

@@ -1,37 +1,53 @@
-//https://vue-screencasts-uploads.s3-us-west-2.amazonaws.com/videos/052-2.4%20-%20JSON%20API%20Relationships.mp4.mp4
-
 <template>
-  <div id="app">
-    <div class="navbar">
-      <div class="logo">
+  <v-app>
+    <v-app-bar class="app-bar pl-12 pr-12" height="120px" app color="#fff" flat>
+      <div class="d-flex align-center justify-center">
         <router-link to="/">
-          <img src="./assets/logo.svg" class="logo__img" />
+          <v-img
+            alt="Logo"
+            contain
+            src=".\assets\logo.svg"
+            transition="scale-transition"
+            width="100"
+          />
         </router-link>
       </div>
-      <div id="nav">
-        <router-link to="/">Home</router-link>
-        <router-link to="/about">Videos</router-link>
-        <router-link to="/about">About</router-link>
-        <router-link to="/video">Contact</router-link>
-      </div>
-    </div>
-    <router-view />
-  </div>
+
+      <v-spacer></v-spacer>
+
+      <v-btn text>
+        <span>Login</span>
+      </v-btn>
+    </v-app-bar>
+
+    <v-content>
+      <router-view />
+    </v-content>
+  </v-app>
 </template>
 
 <script>
 export default {
-  name: "app",
+  name: "App",
+
+  components: {},
   mounted() {
     this.$store.dispatch("loadVideos");
   },
-  components: {}
+  data: () => ({
+    //
+  })
 };
 </script>
 
 <style lang="scss">
 @import url("./assets/styles/variables.css");
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,500,700&display=swap");
+.app-bar {
+  // background-color: #fff;
+  // z-index: 999;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -41,7 +57,7 @@ export default {
 a:link,
 a:visited {
   text-decoration: none;
-  color: currentColor;
+  color: currentColor !important;
 }
 
 .heading-1 {

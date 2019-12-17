@@ -30,7 +30,6 @@ export default new Vuex.Store({
         v.attributes.id = v.id;
         v.attributes.tag_ids = v.relationships.tags.data.map(t => t.id);
       });
-      console.log(videos.map(v => v.attributes));
 
       commit(
         "SET_VIDEOS",
@@ -40,6 +39,11 @@ export default new Vuex.Store({
         "SET_TAGS",
         tags.map(t => t.attributes)
       );
+    }
+  },
+  getters: {
+    getTags: state => id => {
+      return state.tags.find(tag => tag.id == id);
     }
   },
   modules: {}

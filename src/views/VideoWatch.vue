@@ -1,4 +1,5 @@
-// https://www.youtube.com/watch?v=9xF89Q2052g
+// https://www.youtube.com/watch?v=sKrBNGw94eQ&list=PLPwpWyfm6JADRf8x1Jc0Da8R71WJyt-Jn&index=3
+
 
 <template>
   <div class="container">
@@ -14,6 +15,7 @@
         <h2>{{ video.name }}</h2>
       </div>
       <div class="video__description">
+        <button v-for="tag_id in video.tag_ids" :key="tag_id">{{ getTags(tag_id).name }}</button>
         <strong>Description</strong>
         <p v-html="video.description"></p>
       </div>
@@ -24,12 +26,14 @@
 <script>
 import "video.js/dist/video-js.css";
 import { videoPlayer } from "vue-video-player";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     videoPlayer
   },
   computed: {
+    ...mapGetters(["getTags"]),
     video() {
       return this.$store.state.videos.find(
         video => video.id == this.$route.params.id
