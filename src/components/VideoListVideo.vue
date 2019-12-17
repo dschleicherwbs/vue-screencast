@@ -1,16 +1,7 @@
 <template>
   <div class="video-card">
-    <div class="video-card__tags">
-      <v-btn
-        v-for="tag_id in video.tag_ids"
-        :key="tag_id"
-        :to="'/tag/' + tag_id + '/'"
-        exact
-        text
-        small
-      >{{ '#' + getTags(tag_id).name }}</v-btn>
-    </div>
     <router-link :to="'/video/' + video.id">
+      <TagButtons :tag_ids="video.tag_ids" />
       <img :src="video.thumbnail" alt />
       <div class="text">
         <div class="video-card__header">
@@ -23,12 +14,13 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import TagButtons from "./TagButtons";
 
 export default {
-  computed: {
-    ...mapGetters(["getTags"])
+  components: {
+    TagButtons
   },
+
   props: {
     video: {
       type: Object,

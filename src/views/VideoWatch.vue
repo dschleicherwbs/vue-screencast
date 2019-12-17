@@ -5,6 +5,7 @@
   <div class="container">
     <router-link class="back-link" to="/">Back to All Videos</router-link>
     <div class="video">
+      <TagButtons :tag_ids="video.tag_ids" />
       <video-player
         class="video-player-box video__player"
         ref="videoPlayer"
@@ -15,7 +16,6 @@
         <h2>{{ video.name }}</h2>
       </div>
       <div class="video__description">
-        <button v-for="tag_id in video.tag_ids" :key="tag_id">{{ getTags(tag_id).name }}</button>
         <strong>Description</strong>
         <p v-html="video.description"></p>
       </div>
@@ -27,31 +27,37 @@
 import "video.js/dist/video-js.css";
 import { videoPlayer } from "vue-video-player";
 import { mapGetters } from "vuex";
+import TagButtons from "../components/TagButtons";
 
 export default {
   components: {
-    videoPlayer
+    videoPlayer,
+    TagButtons
+  },
+  created() {
+    console.log(this.video);
   },
   computed: {
     ...mapGetters(["getTags"]),
     video() {
-      return this.$store.state.videos.find(
-        video => video.id == this.$route.params.id
+      return (
+        this.$store.state.videos.find(
+          video => video.id == this.$route.params.id
+        ) || {}
       );
     },
     playerOptions() {
       return {
-        // videojs options
-        fluid: true,
         language: "en",
-        playbackRates: [0.5, 1.0, 1.5, 2.0, 3.0],
+        playbackRates: [0.7, 1.0, 1.5, 2.0, 2.5, 3.0],
         sources: [
           {
             type: "video/mp4",
             src: this.video.videoUrl
           }
         ],
-        poster: this.video.thumbnail
+        poster: this.video.thumbnail,
+        fluid: true
       };
     }
   }

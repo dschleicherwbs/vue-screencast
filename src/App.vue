@@ -70,7 +70,7 @@ a:visited {
   font-family: "Montserrat", sans-serif;
   font-weight: 500;
   font-size: 1.1rem;
-  line-height: 1.5;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
