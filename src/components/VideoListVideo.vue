@@ -5,6 +5,10 @@
       <img :src="video.thumbnail" alt />
       <div class="text">
         <div class="video-card__header">
+          <div class="overline mt-2" v-if="isPlayed">
+            <font-awesome-icon icon="check" />
+            watched
+          </div>
           <h4>{{ video.name }}</h4>
         </div>
         <div class="video-card__body">{{ video.description | limit }}</div>
@@ -15,12 +19,18 @@
 
 <script>
 import TagButtons from "./TagButtons";
+import { mapState } from "vuex";
 
 export default {
   components: {
     TagButtons
   },
-
+  computed: {
+    ...mapState(["playedVideos"]),
+    isPlayed() {
+      return this.playedVideos.includes(this.video.id);
+    }
+  },
   props: {
     video: {
       type: Object,
@@ -58,7 +68,7 @@ export default {
 .video-card {
   text-align: left;
   box-shadow: var(--shadow-m);
-  background-color: var(--main-color);
+  background-image: linear-gradient(to bottom, var(--main-color), #fff);
   border-radius: var(--br-m);
   border: 2px solid transparent;
   position: relative;
@@ -67,6 +77,7 @@ export default {
 
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
 
   &:hover {
     transform: translateY(-4px) scaleY(1.009) scaleX(0.991);
@@ -81,20 +92,12 @@ export default {
 
   &__header {
     background-color: var(--highlight-color);
-    border-top: 5px solid var(--highlight-color);
     color: var(--highlight-font-color);
     letter-spacing: 1.5px;
   }
 
   &__body {
     padding-bottom: var(--space-1);
-    border-radius: 0 0 var(--br-m) var(--br-m);
-    background-image: linear-gradient(
-      to bottom,
-      var(--main-color),
-      var(--main-color-light)
-    );
-    border-bottom: 3px solid var(--main-color-light);
   }
 
   a {

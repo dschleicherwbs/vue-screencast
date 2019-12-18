@@ -4,14 +4,18 @@
   <div class="home">
     <h1 class="d-flex display-3 justify-start">Videos</h1>
     <div class="video-container">
-      <VideoListVideo v-for="video in videos" :key="video.name" :video="video"></VideoListVideo>
+      <VideoListVideo
+        v-for="video in videos"
+        :key="video.name"
+        :video="video"
+      ></VideoListVideo>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import VideoListVideo from "../components/VideoListVideo";
+import VideoListVideo from "@/components/VideoListVideo";
 
 export default {
   name: "home",

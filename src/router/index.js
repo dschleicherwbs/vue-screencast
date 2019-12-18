@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import VideoWatch from "../views/VideoWatch.vue";
 import TagVideoList from "../views/TagVideoList.vue";
+import VideoCreate from "../views/VideoCreate.vue";
 
 Vue.use(VueRouter);
 
@@ -20,6 +21,11 @@ const routes = [
     // wich is lazy-loaded when the route is visited
     component: () =>
       import(/* WebpackChunkName: "about" */ "../views/About.vue")
+  },
+  {
+    path: "/video/new",
+    name: "video-create",
+    component: VideoCreate
   },
   {
     path: "/video/:id",

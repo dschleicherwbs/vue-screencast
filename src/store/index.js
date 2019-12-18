@@ -7,7 +7,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     videos: [],
-    tags: []
+    tags: [],
+    playedVideos: []
   },
   mutations: {
     SET_VIDEOS(state, videos) {
@@ -15,6 +16,20 @@ export default new Vuex.Store({
     },
     SET_TAGS(state, tags) {
       state.tags = tags;
+    },
+    SET_PLAYED_VIDEOS(state, playedVideos) {
+      state.playedVideos = playedVideos;
+    },
+    MARK_VIDEO_PLAYED(state, videoId) {
+      // state.playedVideos.push(videoId.toString());
+      const newPlayedVideos = state.playedVideos.concat(videoId);
+      state.playedVideos = newPlayedVideos;
+      window.localStorage.playedVideos = JSON.stringify(newPlayedVideos);
+    },
+    UNMARK_VIDEO_PLAYED(state, videoId) {
+      const newPlayedVideos = state.playedVideos.filter(id => id != videoId);
+      state.playedVideos = newPlayedVideos;
+      window.localStorage.playedVideos = JSON.stringify(newPlayedVideos);
     }
   },
   actions: {
@@ -39,6 +54,15 @@ export default new Vuex.Store({
         "SET_TAGS",
         tags.map(t => t.attributes)
       );
+
+      let playedVideos = JSON.parse(window.localStorage.playedVideos);
+      commit("SET_PLAYED_VIDEOS", playedVideos);
+    },
+    markPlayed({ commit }, videoId) {
+      commit("MARK_VIDEO_PLAYED", videoId);
+    },
+    unmarkPlayed({ commit }, videoId) {
+      commit("UNMARK_VIDEO_PLAYED", videoId);
     }
   },
   getters: {

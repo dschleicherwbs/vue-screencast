@@ -26,5 +26,5 @@
   /* border Radius */
   --br-m: 4px;
 
-  --shadow-m: 3px 4px 1px rgba(0, 0, 0, 0.1);
+  --shadow-m: 3px 4px 1px rgba(0, 0, 0, 0.1), -2px -2px 4px rgba(0, 0, 0, 0.013);
 }

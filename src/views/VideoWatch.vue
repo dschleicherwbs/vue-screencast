@@ -1,18 +1,23 @@
-// https://www.youtube.com/watch?v=sKrBNGw94eQ&list=PLPwpWyfm6JADRf8x1Jc0Da8R71WJyt-Jn&index=3
-
-
 <template>
   <div class="container">
-    <router-link class="back-link" to="/">Back to All Videos</router-link>
+    <router-link class="back-link" to="/">Back to all Videos</router-link>
     <div class="video">
       <TagButtons :tag_ids="video.tag_ids" />
       <video-player
         class="video-player-box video__player"
         ref="videoPlayer"
         :options="playerOptions"
+        @ended="markPlayed"
       ></video-player>
       <!-- <img :src="video.thumbnail" alt="" /> -->
       <div class="video__title">
+        <div class="overline mt-2" v-if="isPlayed" @click="unmarkPlayed">
+          <font-awesome-icon icon="check" />
+          watched
+        </div>
+        <div class="overline mt-2" v-else @click="markPlayed">
+          Mark as Played
+        </div>
         <h2>{{ video.name }}</h2>
       </div>
       <div class="video__description">
@@ -26,7 +31,7 @@
 <script>
 import "video.js/dist/video-js.css";
 import { videoPlayer } from "vue-video-player";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import TagButtons from "../components/TagButtons";
 
 export default {
@@ -34,17 +39,11 @@ export default {
     videoPlayer,
     TagButtons
   },
-  created() {
-    console.log(this.video);
-  },
   computed: {
     ...mapGetters(["getTags"]),
+    ...mapState(["playedVideos", "videos"]),
     video() {
-      return (
-        this.$store.state.videos.find(
-          video => video.id == this.$route.params.id
-        ) || {}
-      );
+      return this.videos.find(video => video.id == this.$route.params.id) || {};
     },
     playerOptions() {
       return {
@@ -53,12 +52,23 @@ export default {
         sources: [
           {
             type: "video/mp4",
-            src: this.video.videoUrl
+            src: this.video["video-url"]
           }
         ],
         poster: this.video.thumbnail,
         fluid: true
       };
+    },
+    isPlayed() {
+      return this.playedVideos.includes(this.video.id);
+    }
+  },
+  methods: {
+    markPlayed() {
+      this.$store.dispatch("markPlayed", this.video.id);
+    },
+    unmarkPlayed() {
+      this.$store.dispatch("unmarkPlayed", this.video.id);
     }
   }
 };
@@ -66,10 +76,6 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  margin: 0 auto;
-  margin-top: 5rem;
-  width: 80%;
-
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -79,17 +85,12 @@ export default {
   margin-top: 1rem;
   text-align: left;
   border-radius: var(--br-m);
-  max-width: 1200px;
+  max-width: 1000px;
   box-shadow: var(--shadow-m);
+  background-image: linear-gradient(var(--main-color-light), #fff);
 
   display: flex;
   flex-direction: column;
-
-  &__player {
-    width: 100%;
-    border-top: 7px solid var(--highlight-color);
-    border-radius: var(--br-m) var(--br-m) 0 0;
-  }
 
   &__title {
     padding: var(--space-05);
@@ -98,10 +99,18 @@ export default {
 
   &__description {
     padding: var(--space-05);
-    background-color: var(--main-color);
 
     p {
       margin: 1rem 0;
+    }
+  }
+  .overline {
+    display: inline-block;
+    transition: all 200ms ease-out;
+
+    &:hover {
+      background-color: rgba($color: #000000, $alpha: 0.1);
+      cursor: pointer;
     }
   }
 }

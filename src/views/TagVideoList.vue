@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <h1 class="d-flex display-3 justify-start">Videos with Tag "{{ tag.name }}"</h1>
+  <div class="d-flex flex-column align-start">
+    <h1 class="display-3">Videos with Tag "{{ tag.name }}"</h1>
+    <router-link to="/">Back to all Videos</router-link>
     <div class="video-container">
       <VideoListVideo v-for="video in videosOnTag" :key="video.id" :video="video" />
     </div>
@@ -31,8 +32,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h1 {
+  margin-bottom: 3rem;
+}
 .video-container {
-  padding-top: 3rem;
+  padding-top: 1rem;
+  width: 100%;
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, auto));
