@@ -30,6 +30,14 @@ export default new Vuex.Store({
       const newPlayedVideos = state.playedVideos.filter(id => id != videoId);
       state.playedVideos = newPlayedVideos;
       window.localStorage.playedVideos = JSON.stringify(newPlayedVideos);
+    },
+    ADD_VIDEO(state, video) {
+      const newVideos = state.videos.concat(video);
+      state.videos = newVideos;
+    },
+    DELETE_VIDEO(state, videoId) {
+      const newVideos = state.videos.filter(video => video.id != videoId);
+      state.videos = newVideos;
     }
   },
   actions: {
@@ -63,8 +71,23 @@ export default new Vuex.Store({
     },
     unmarkPlayed({ commit }, videoId) {
       commit("UNMARK_VIDEO_PLAYED", videoId);
+    },
+    async createVideo({ commit }, video) {
+      const response = await Api().post("/videos", video);
+      const savedVideo = response.data.data;
+      const fixedVideo = { id: savedVideo.id, ...savedVideo.attributes };
+      commit("ADD_VIDEO", fixedVideo);
+
+      return fixedVideo;
+    },
+    async deleteVideo({ commit }, video) {
+      const response = await Api().delete(`/videos/${video.id}`);
+      if (response.status == 200 || response.status == 204) {
+        commit("DELETE_VIDEO", video.id);
+      }
     }
   },
+
   getters: {
     getTags: state => id => {
       return state.tags.find(tag => tag.id == id);

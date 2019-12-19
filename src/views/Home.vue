@@ -3,24 +3,18 @@
 <template>
   <div class="home">
     <h1 class="d-flex display-3 justify-start">Videos</h1>
-    <div class="video-container">
-      <VideoListVideo
-        v-for="video in videos"
-        :key="video.name"
-        :video="video"
-      ></VideoListVideo>
-    </div>
+    <VideoList />
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import VideoListVideo from "@/components/VideoListVideo";
+import VideoList from "@/components/VideoList";
 
 export default {
   name: "home",
   components: {
-    VideoListVideo
+    VideoList
   },
   computed: {
     ...mapState(["videos", "tags"])
@@ -28,13 +22,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.video-container {
-  padding-top: 3rem;
 
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, auto));
-  gap: 2rem;
-  justify-content: left;
-}
-</style>

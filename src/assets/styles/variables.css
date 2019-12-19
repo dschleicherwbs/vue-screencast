@@ -13,10 +13,12 @@
 
   --secondary-color: #90b4ce;
   --tertiary-color: #ef4565;
+  --danger-color: #ef4565;
 
   --bg-med-color: #fffffe;
 
-  --space-05: 0.9rem 1.4rem 0.9rem 1.4rem;
+  --space-small: 0.6rem 1rem;
+  --space-05: 0.9rem 1.4rem;
   --space-1: 1.4rem;
   --space-2: 2rem;
   --space-3: 3rem;

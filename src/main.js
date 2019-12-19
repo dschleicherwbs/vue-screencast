@@ -8,10 +8,17 @@ import tagsJSON from "./mirage/tags.json";
 import vuetify from "./plugins/vuetify";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheck,
+  faCaretSquareRight,
+  faTrash,
+  faEdit
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faCheck);
+[faCheck, faCaretSquareRight, faTrash, faEdit].forEach(icon =>
+  library.add(icon)
+);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
@@ -19,7 +26,15 @@ new Server({
   serializers: {
     application: JSONAPISerializer,
     video: JSONAPISerializer.extend({
-      include: ["tags"]
+      include: ["tags"],
+      normalize(json) {
+        return {
+          data: {
+            type: "video",
+            attributes: json
+          }
+        };
+      }
     }),
     tag: JSONAPISerializer.extend({
       include: ["videos"]
@@ -39,6 +54,9 @@ new Server({
   },
   routes() {
     this.get("/videos");
+    this.post("/videos");
+    this.put("/videos/:id");
+    this.delete("/videos/:id");
   }
 });
 

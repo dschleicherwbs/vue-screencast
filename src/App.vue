@@ -17,9 +17,8 @@
 
       <div class="nav">
         <v-btn text to="/video/new">Add Video</v-btn>
-        <v-btn text>
-          Login
-        </v-btn>
+        <v-btn text to="/admin/videos">Admin</v-btn>
+        <v-btn text>Login</v-btn>
       </div>
     </v-app-bar>
 
@@ -58,16 +57,27 @@ a:visited {
   color: currentColor !important;
 }
 
+.container {
+  display: grid;
+  gap: 2rem;
+}
+
 .display-3 {
   text-align: left !important;
 }
 
 .app-bar {
+  background-color: rgba($color: #fff, $alpha: 0.985) !important;
   .text-highlight {
     font-weight: 700;
   }
 }
 
+.nav {
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 2rem;
+}
 #app {
   font-family: "Montserrat", sans-serif;
   font-weight: 500;
@@ -78,9 +88,5 @@ a:visited {
   text-align: center;
   color: var(--font-color);
   padding: 4rem 5rem;
-}
-
-.app-bar {
-  background-color: rgba($color: #fff, $alpha: 0.985) !important;
 }
 </style>
