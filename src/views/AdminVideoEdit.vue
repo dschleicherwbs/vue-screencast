@@ -1,23 +1,57 @@
 <template>
-  <div>{{ video.name }}</div>
+  <div class="container">
+    <h1 class="display-3">Edit "{{ initVideoTitle }}"</h1>
+    <VideoEditForm
+      :video="video"
+      :saveVideo="saveVideo"
+      :endEdit="endEdit"
+      buttonText="Edit Video"
+    />
+  </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import VideoEditForm from "@/components/VideoEditForm.vue";
 
 export default {
-  mounted() {
-    console.log(this.video);
-    console.log(this.$route.params.id);
+  components: {
+    VideoEditForm
   },
   computed: {
     ...mapState(["videos"]),
     video() {
-      return this.videos.find(video => video.id == this.$route.params.id);
+      const video = this.videos.find(
+        video => video.id == this.$route.params.id
+      );
+      return video;
+    }
+  },
+  data() {
+    return {
+      initVideoTitle: ""
+    };
+  },
+  mounted() {
+    this.initVideoTitle = this.video.name;
+  },
+  methods: {
+    async saveVideo() {
+      await this.$store.dispatch("editVideo", this.video);
+
+      this.$router.push({ name: "admin-video-list" });
+    },
+    endEdit() {
+      this.$router.push({ name: "admin-video-list" });
     }
   }
 };
 </script>
 
-<style>
-</style>vue
+<style lang="scss" scoped>
+.form {
+  display: grid;
+  gap: 2rem;
+  justify-items: stretch;
+}
+</style>

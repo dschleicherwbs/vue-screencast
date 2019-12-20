@@ -78,9 +78,15 @@ export default {
     align-items: center;
     text-align: left;
     column-gap: 4rem;
+    border-left: 3px solid transparent;
+    transition: all 600ms ease-out;
 
     &:nth-child(even) {
       background-color: #fff;
+    }
+
+    &:hover {
+      border-left: 3px solid var(--highlight-color);
     }
   }
 

@@ -1,41 +1,12 @@
-//
-https://www.youtube.com/watch?v=XygcDWMLYO8&list=PLPwpWyfm6JADRf8x1Jc0Da8R71WJyt-Jn&index=6
-
 <template>
   <div class="container">
     <h1 class="display-3">New Video</h1>
-    <form class="form" @submit.prevent="createVideo">
-      <input
-        class="fuckyou"
-        type="text"
-        name="title"
-        id="title"
-        v-model="video.name"
-        placeholder="Title"
-      />
-      <textarea
-        rows="4"
-        name="description"
-        id="description"
-        v-model="video.description"
-        placeholder="Description"
-      />
-      <input
-        type="text"
-        name="title"
-        id="thumbnail"
-        v-model="video.thumbnail"
-        placeholder="Thumbnail URL"
-      />
-      <input
-        class="fuckyoutoo"
-        type="text"
-        name="videoUrl"
-        id="videoUrl"
-        v-model="video.videoUrl"
-        placeholder="Video URL"
-      />
-      <input type="submit" value="Save Video" />
+    <form class="form">
+      <v-text-field v-model="video.name" label="Title" />
+      <v-textarea rows="4" v-model="video.description" label="Description" />
+      <v-text-field v-model="video.thumbnail" label="Thumbnail URL" />
+      <v-text-field v-model="video.videoUrl" label="Video URL" />
+      <v-btn @click.prevent="createVideo" color="primary" depressed>Add Video</v-btn>
     </form>
     <VideoListVideo class="videoListVideo" :video="video" />
   </div>
@@ -91,6 +62,7 @@ textarea {
   background-color: #fff;
   border-radius: var(--br-m);
   padding: var(--space-small);
+  min-width: 320px;
 }
 
 input[type="submit"] {

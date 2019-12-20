@@ -1,5 +1,3 @@
-// https://www.youtube.com/watch?v=vaCrzaeC-RE 27min
-
 <template>
   <div class="home">
     <h1 class="d-flex display-3 justify-start">Videos</h1>

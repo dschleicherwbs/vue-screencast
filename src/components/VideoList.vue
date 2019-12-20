@@ -1,6 +1,8 @@
+// https://www.youtube.com/watch?v=0BHPs2kNnVA&list=PLPwpWyfm6JADRf8x1Jc0Da8R71WJyt-Jn&index=8 19min
+
 <template>
   <div class="video-container">
-    <VideoListVideo v-for="video in videos" :key="video.name" :video="video"></VideoListVideo>
+    <VideoListVideo v-for="video in videos" :key="video.id" limitDescription :video="video"></VideoListVideo>
   </div>
 </template>
 
@@ -24,7 +26,7 @@ export default {
   padding-top: 3rem;
 
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, auto));
+  grid-template-columns: repeat(auto-fill, minmax(260px, auto));
   gap: 2rem;
   justify-content: left;
 }

@@ -12,12 +12,9 @@
       <!-- <img :src="video.thumbnail" alt="" /> -->
       <div class="video__title">
         <div class="overline mt-2" v-if="isPlayed" @click="unmarkPlayed">
-          <font-awesome-icon icon="check" />
-          watched
+          <font-awesome-icon icon="check" />&nbsp;watched
         </div>
-        <div class="overline mt-2" v-else @click="markPlayed">
-          Mark as Played
-        </div>
+        <div class="overline mt-2" v-else @click="markPlayed">Mark as Played</div>
         <h2>{{ video.name }}</h2>
       </div>
       <div class="video__description">
@@ -95,6 +92,7 @@ export default {
   &__title {
     padding: var(--space-05);
     background-color: var(--highlight-color);
+    color: var(--highlight-font-color);
   }
 
   &__description {
