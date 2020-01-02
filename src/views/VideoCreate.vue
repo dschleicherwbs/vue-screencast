@@ -1,19 +1,26 @@
 <template>
   <div class="container">
     <h1 class="display-3">New Video</h1>
-    <form class="form">
+    <!-- <form class="form">
       <v-text-field v-model="video.name" label="Title" />
       <v-textarea rows="4" v-model="video.description" label="Description" />
       <v-text-field v-model="video.thumbnail" label="Thumbnail URL" />
       <v-text-field v-model="video.videoUrl" label="Video URL" />
       <v-btn @click.prevent="createVideo" color="primary" depressed>Add Video</v-btn>
-    </form>
+    </form>-->
+    <VideoEditForm
+      :video="video"
+      :saveVideo="createVideo"
+      :endEdit="endEdit"
+      buttonText="Add Video"
+    />
     <VideoListVideo class="videoListVideo" :video="video" />
   </div>
 </template>
 
 <script>
 import VideoListVideo from "../components/VideoListVideo";
+import VideoEditForm from "@/components/VideoEditForm.vue";
 
 export default {
   name: "video-create",
@@ -28,7 +35,8 @@ export default {
     };
   },
   components: {
-    VideoListVideo
+    VideoListVideo,
+    VideoEditForm
   },
   methods: {
     async createVideo() {
@@ -36,6 +44,9 @@ export default {
       console.log(savedVideo);
 
       this.$router.push({ name: "video-watch", params: { id: savedVideo.id } });
+    },
+    endEdit() {
+      this.$router.push({ name: "home" });
     }
   }
 };

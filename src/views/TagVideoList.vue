@@ -3,7 +3,7 @@
     <h1 class="display-3">Videos with Tag "{{ tag.name }}"</h1>
     <router-link to="/">Back to all Videos</router-link>
     <div class="video-container">
-      <VideoListVideo v-for="video in videosOnTag" :key="video.id" :video="video" />
+      <VideoListVideo v-for="video in videosOnTag" :key="video.id" :video="video" limitDescription />
     </div>
   </div>
 </template>

@@ -6,6 +6,7 @@ import TagVideoList from "../views/TagVideoList.vue";
 import VideoCreate from "../views/VideoCreate.vue";
 import AdminVideoList from "../views/AdminVideoList.vue";
 import AdminVideoEdit from "../views/AdminVideoEdit.vue";
+import AdminUserList from "../views/AdminUserList.vue";
 
 Vue.use(VueRouter);
 
@@ -14,6 +15,11 @@ const routes = [
     path: "/",
     name: "home",
     component: Home
+  },
+  {
+    path: "/admin/users",
+    name: "admin-user-list",
+    component: AdminUserList
   },
   {
     path: "/about",

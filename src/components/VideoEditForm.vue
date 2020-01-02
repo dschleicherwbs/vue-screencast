@@ -16,7 +16,7 @@
     <v-text-field v-model="video.thumbnail" label="Thumbnail URL" />
     <v-text-field v-model="video.videoUrl" label="Video URL" />
     <div class="btn-box">
-      <v-btn @click.prevent="endEdit" :disabled="!formValidated" color="primary" outlined>cancel</v-btn>
+      <v-btn @click.prevent="endEdit" color="primary" outlined>cancel</v-btn>
       <v-btn
         @click.prevent="saveVideo"
         :disabled="!formValidated"
@@ -32,7 +32,6 @@ export default {
   data() {
     return {
       formValidated: false,
-      initVideoTitle: "",
       requriedInput(fieldName) {
         return str => (str && str.length > 0) || `${fieldName} is required`;
       },

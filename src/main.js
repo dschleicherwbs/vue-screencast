@@ -5,6 +5,7 @@ import store from "./store";
 import { Server, JSONAPISerializer, Model, hasMany } from "miragejs";
 import videoJSON from "./mirage/videos.json";
 import tagsJSON from "./mirage/tags.json";
+import usersJSON from "./mirage/users.json";
 import vuetify from "./plugins/vuetify";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -12,11 +13,12 @@ import {
   faCheck,
   faCaretSquareRight,
   faTrash,
-  faEdit
+  faEdit,
+  faSignOutAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-[faCheck, faCaretSquareRight, faTrash, faEdit].forEach(icon =>
+[faCheck, faCaretSquareRight, faTrash, faEdit, faSignOutAlt].forEach(icon =>
   library.add(icon)
 );
 
@@ -42,7 +44,8 @@ new Server({
   },
   fixtures: {
     videos: videoJSON,
-    tags: tagsJSON
+    tags: tagsJSON,
+    users: usersJSON
   },
   models: {
     video: Model.extend({
@@ -50,10 +53,12 @@ new Server({
     }),
     tag: Model.extend({
       videos: hasMany()
-    })
+    }),
+    users: Model
   },
   routes() {
     this.get("/videos");
+    this.get("/users");
     this.post("/videos");
     this.put("/videos/:id");
     this.delete("/videos/:id");

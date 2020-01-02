@@ -8,7 +8,9 @@ export default new Vuex.Store({
   state: {
     videos: [],
     tags: [],
-    playedVideos: []
+    playedVideos: [],
+    users: [],
+    currentUser: { name: "John Doe" }
   },
   mutations: {
     SET_VIDEOS(state, videos) {
@@ -19,6 +21,9 @@ export default new Vuex.Store({
     },
     SET_PLAYED_VIDEOS(state, playedVideos) {
       state.playedVideos = playedVideos;
+    },
+    SET_USERS(state, users) {
+      state.users = users;
     },
     MARK_VIDEO_PLAYED(state, videoId) {
       // state.playedVideos.push(videoId.toString());
@@ -45,6 +50,14 @@ export default new Vuex.Store({
           v = video;
         }
       });
+    },
+    LOGOUT_USER(state) {
+      state.currentUser = {};
+      window.localStorage.currentUser = JSON.stringify({});
+    },
+    SET_CURRENT_USER(state, user) {
+      state.currentUser = user;
+      window.localStorage.currentUser = JSON.stringify(user);
     }
   },
   actions: {
@@ -73,6 +86,17 @@ export default new Vuex.Store({
       let playedVideos = JSON.parse(window.localStorage.playedVideos);
       commit("SET_PLAYED_VIDEOS", playedVideos);
     },
+    async loadUsers({ commit }) {
+      const response = await Api().get("/users");
+      const users = response.data.data;
+      const user = JSON.parse(window.localStorage.currentUser);
+      commit("SET_CURRENT_USER", user);
+
+      commit(
+        "SET_USERS",
+        users.map(u => u.attributes)
+      );
+    },
     markPlayed({ commit }, videoId) {
       commit("MARK_VIDEO_PLAYED", videoId);
     },
@@ -98,13 +122,17 @@ export default new Vuex.Store({
       const newVideo = response.data.data.attributes;
       commit("EDIT_VIDEO", newVideo);
       return newVideo;
+    },
+    logoutUser({ commit }) {
+      commit("LOGOUT_USER");
+    },
+    loginUser({ commit }, user) {
+      commit("SET_CURRENT_USER", user);
     }
   },
 
   getters: {
-    getTags: state => id => {
-      return state.tags.find(tag => tag.id == id);
-    }
+    getTags: state => id => state.tags.find(tag => tag.id == id)
   },
   modules: {}
 });

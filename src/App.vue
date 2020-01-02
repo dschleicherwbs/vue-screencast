@@ -18,7 +18,14 @@
       <div class="nav">
         <v-btn text to="/video/new">Add Video</v-btn>
         <v-btn text to="/admin/videos">Admin</v-btn>
-        <v-btn text>Login</v-btn>
+        <div v-if="currentUser.name">
+          <v-btn class="nav__user" text>{{ currentUser.name }}</v-btn>
+          <v-btn text @click="logoutUser">
+            <font-awesome-icon icon="sign-out-alt" />
+          </v-btn>
+        </div>
+
+        <v-btn text v-else to="/admin/users">Login</v-btn>
       </div>
     </v-app-bar>
 
@@ -29,12 +36,21 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "App",
-
+  computed: {
+    ...mapState(["currentUser"])
+  },
   components: {},
   mounted() {
     this.$store.dispatch("loadVideos");
+  },
+  methods: {
+    logoutUser() {
+      this.$store.dispatch("logoutUser");
+    }
   },
   data: () => ({
     //
@@ -77,6 +93,10 @@ a:visited {
   display: grid;
   grid-auto-flow: column;
   column-gap: 2rem;
+
+  &__user {
+    font-weight: 700 !important;
+  }
 }
 #app {
   font-family: "Montserrat", sans-serif;
