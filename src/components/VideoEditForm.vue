@@ -11,7 +11,7 @@
       counter
       v-model="video.description"
       label="Description"
-      :rules="[requriedInput('Description'),  minLenght(20)]"
+      :rules="[requriedInput('Description'), minLenght(20)]"
     />
     <v-text-field v-model="video.thumbnail" label="Thumbnail URL" />
     <v-text-field v-model="video.videoUrl" label="Video URL" />
@@ -22,29 +22,19 @@
         :disabled="!formValidated"
         color="primary"
         depressed
-      >{{ buttonText }}</v-btn>
+        >{{ buttonText }}</v-btn
+      >
     </div>
   </v-form>
 </template>
 
 <script>
+import validations from "@/utils/validations.js";
 export default {
   data() {
     return {
       formValidated: false,
-      requriedInput(fieldName) {
-        return str => (str && str.length > 0) || `${fieldName} is required`;
-      },
-      minLenght(length) {
-        return str =>
-          (str && str.length > length) ||
-          `Minimum length is ${length} characters`;
-      },
-      maxLenght(length) {
-        return str =>
-          (str && str.length < length) ||
-          `Maximum length is ${length} characters`;
-      }
+      ...validations
     };
   },
   props: ["video", "saveVideo", "endEdit", "buttonText"]

@@ -3,10 +3,13 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import VideoWatch from "../views/VideoWatch.vue";
 import TagVideoList from "../views/TagVideoList.vue";
-import VideoCreate from "../views/VideoCreate.vue";
+import AdminVideoCreate from "../views/AdminVideoCreate.vue";
 import AdminVideoList from "../views/AdminVideoList.vue";
 import AdminVideoEdit from "../views/AdminVideoEdit.vue";
 import AdminUserList from "../views/AdminUserList.vue";
+import UserLogin from "../views/UserLogin.vue";
+import UserRegistration from "../views/UserRegistration.vue";
+import Admin from "../views/Admin.vue";
 
 Vue.use(VueRouter);
 
@@ -17,33 +20,49 @@ const routes = [
     component: Home
   },
   {
-    path: "/admin/users",
-    name: "admin-user-list",
-    component: AdminUserList
+    path: "/login",
+    name: "user-login",
+    component: UserLogin
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // wich is lazy-loaded when the route is visited
-    component: () =>
-      import(/* WebpackChunkName: "about" */ "../views/About.vue")
+    path: "/registration",
+    name: "user-registration",
+    component: UserRegistration
   },
   {
-    path: "/admin/videos",
-    name: "admin-video-list",
-    component: AdminVideoList
-  },
-  {
-    path: "/admin/videos/:id/edit",
-    name: "admin-video-edit",
-    component: AdminVideoEdit
-  },
-  {
-    path: "/video/new",
-    name: "video-create",
-    component: VideoCreate
+    path: "/admin",
+    name: "admin",
+    component: Admin,
+    beforeEnter(to, from, next) {
+      const currentUser = JSON.parse(window.localStorage.currentUser);
+      if (currentUser && currentUser.admin) {
+        next();
+      } else {
+        next("/");
+      }
+    },
+    children: [
+      {
+        path: "videos",
+        name: "admin-video-list",
+        component: AdminVideoList
+      },
+      {
+        path: "users",
+        name: "admin-user-list",
+        component: AdminUserList
+      },
+      {
+        path: "videos/:id/edit",
+        name: "admin-video-edit",
+        component: AdminVideoEdit
+      },
+      {
+        path: "videos/new",
+        name: "video-create",
+        component: AdminVideoCreate
+      }
+    ]
   },
   {
     path: "/video/:id",
@@ -56,6 +75,15 @@ const routes = [
     name: "tag",
     component: TagVideoList,
     params: true
+  },
+  {
+    path: "/about",
+    name: "about",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // wich is lazy-loaded when the route is visited
+    component: () =>
+      import(/* WebpackChunkName: "about" */ "../views/About.vue")
   }
 ];
 

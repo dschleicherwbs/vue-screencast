@@ -1,20 +1,25 @@
-// https://www.youtube.com/watch?v=cjRst4qduzM&list=PLPwpWyfm6JADRf8x1Jc0Da8R71WJyt-Jn&index=7 21min
-
 <template>
   <div class="container">
     <h1 class="display-3">Admin Page</h1>
     <v-btn
       color="secondary"
-      to="/video/new"
+      to="/admin/videos/new"
       class="thisButtonWantsToBeWhite"
       x-large
       depressed
-    >Add Video</v-btn>
+      >Add Video</v-btn
+    >
 
     <div class="admin-video-container">
-      <div class="admin-video-container__item" v-for="video in videos" :key="video.id">
+      <div
+        class="admin-video-container__item"
+        v-for="video in videos"
+        :key="video.id"
+      >
         <div class="admin-video-container__name">{{ video.name }}</div>
-        <div class="admin-video-container__description">{{ video.description | abbreviate }}</div>
+        <div class="admin-video-container__description">
+          {{ video.description | abbreviate }}
+        </div>
         <div class="btn-box">
           <v-btn
             depressed

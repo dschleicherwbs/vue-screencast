@@ -89,13 +89,15 @@ export default new Vuex.Store({
     async loadUsers({ commit }) {
       const response = await Api().get("/users");
       const users = response.data.data;
-      const user = JSON.parse(window.localStorage.currentUser);
-      commit("SET_CURRENT_USER", user);
 
       commit(
         "SET_USERS",
         users.map(u => u.attributes)
       );
+    },
+    async loadCurrentUser({ commit }) {
+      const user = JSON.parse(window.localStorage.currentUser);
+      commit("SET_CURRENT_USER", user);
     },
     markPlayed({ commit }, videoId) {
       commit("MARK_VIDEO_PLAYED", videoId);
@@ -126,8 +128,33 @@ export default new Vuex.Store({
     logoutUser({ commit }) {
       commit("LOGOUT_USER");
     },
-    loginUser({ commit }, user) {
-      commit("SET_CURRENT_USER", user);
+    async loginUser({ commit }, loginInfo) {
+      try {
+        const response = await Api().post("/sessions", loginInfo);
+        const user = response.data.data.attributes;
+
+        commit("SET_CURRENT_USER", user);
+
+        return user;
+      } catch {
+        return {
+          error: "Email/password combination was incorrect. Please try again"
+        };
+      }
+    },
+    async registerUser({ commit }, registrationInfo) {
+      try {
+        const response = await Api().post("/users", registrationInfo);
+        const user = response.data.data.attributes;
+
+        commit("SET_CURRENT_USER", user);
+
+        return user;
+      } catch {
+        return {
+          error: "Therre was an error. Please try again"
+        };
+      }
     }
   },
 

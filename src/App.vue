@@ -1,3 +1,7 @@
+//
+https://www.youtube.com/watch?v=4phclwjuPMg&list=PLPwpWyfm6JADRf8x1Jc0Da8R71WJyt-Jn&index=10
+// 15min
+
 <template>
   <v-app>
     <v-app-bar class="app-bar pl-12 pr-12" height="120px" app flat>
@@ -16,16 +20,18 @@
       <v-spacer></v-spacer>
 
       <div class="nav">
-        <v-btn text to="/video/new">Add Video</v-btn>
-        <v-btn text to="/admin/videos">Admin</v-btn>
+        <v-btn text to="/">Home</v-btn>
+        <v-btn text to="/admin/videos" v-if="currentUser.admin">Admin</v-btn>
         <div v-if="currentUser.name">
           <v-btn class="nav__user" text>{{ currentUser.name }}</v-btn>
           <v-btn text @click="logoutUser">
             <font-awesome-icon icon="sign-out-alt" />
           </v-btn>
         </div>
-
-        <v-btn text v-else to="/admin/users">Login</v-btn>
+        <div class="nav" v-else>
+          <v-btn text to="/login">Login</v-btn>
+          <v-btn text to="/registration">SignUp</v-btn>
+        </div>
       </div>
     </v-app-bar>
 
@@ -46,6 +52,7 @@ export default {
   components: {},
   mounted() {
     this.$store.dispatch("loadVideos");
+    this.$store.dispatch("loadCurrentUser");
   },
   methods: {
     logoutUser() {

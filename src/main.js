@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import { Server, JSONAPISerializer, Model, hasMany } from "miragejs";
+import { Server, JSONAPISerializer, Model, hasMany, Response } from "miragejs";
 import videoJSON from "./mirage/videos.json";
 import tagsJSON from "./mirage/tags.json";
 import usersJSON from "./mirage/users.json";
@@ -58,10 +58,22 @@ new Server({
   },
   routes() {
     this.get("/videos");
-    this.get("/users");
     this.post("/videos");
     this.put("/videos/:id");
     this.delete("/videos/:id");
+    this.get("/users");
+    this.get("/users/:id");
+    this.post("/users", function(schema, request) {
+      const json = JSON.parse(request.requestBody);
+      const response = schema.users.create(json);
+      return this.serialize(response);
+    });
+    this.post("/sessions", function(schema, request) {
+      const json = JSON.parse(request.requestBody);
+      const response = schema.users.findBy({ email: json.email });
+      if (json.password === "12345") return this.serialize(response);
+      else return new Response(401);
+    });
   }
 });
 
