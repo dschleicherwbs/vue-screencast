@@ -1,7 +1,7 @@
 [
   {
     "id": 0,
-    "name": "FTM",
+    "name": "Dev Static",
     "email": "a@a.aa",
     "admin": true,
     "playedVideos": ["1", "3"]

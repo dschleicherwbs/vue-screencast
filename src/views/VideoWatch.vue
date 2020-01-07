@@ -11,10 +11,10 @@
       ></video-player>
       <!-- <img :src="video.thumbnail" alt="" /> -->
       <div class="video__title">
-        <div class="overline mt-2" v-if="isPlayed" @click="unmarkPlayed">
+        <div class="overline mt-2" v-if="isPlayed(video.id)" @click="unmarkPlayed">
           <font-awesome-icon icon="check" />&nbsp;watched
         </div>
-        <div class="overline mt-2" v-else @click="markPlayed">Mark as Played</div>
+        <div class="overline mt-2" v-else-if="currentUser.id" @click="markPlayed">Mark as Played</div>
         <h2>{{ video.name }}</h2>
       </div>
       <div class="video__description">
@@ -37,8 +37,8 @@ export default {
     TagButtons
   },
   computed: {
-    ...mapGetters(["getTags"]),
-    ...mapState(["playedVideos", "videos"]),
+    ...mapGetters(["getTags", "playedVideos", "isPlayed"]),
+    ...mapState(["videos", "currentUser"]),
     video() {
       return this.videos.find(video => video.id == this.$route.params.id) || {};
     },
@@ -55,9 +55,6 @@ export default {
         poster: this.video.thumbnail,
         fluid: true
       };
-    },
-    isPlayed() {
-      return this.playedVideos.includes(this.video.id);
     }
   },
   methods: {

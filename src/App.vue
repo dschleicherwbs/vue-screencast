@@ -38,6 +38,19 @@ https://www.youtube.com/watch?v=4phclwjuPMg&list=PLPwpWyfm6JADRf8x1Jc0Da8R71WJyt
     <v-content>
       <router-view />
     </v-content>
+    <v-snackbar
+      v-for="(snackbar, index) in snackbars.filter(s => s.show)"
+      v-model="snackbar.show"
+      :key="snackbar.text + Math.random()"
+      :timeout="snackbar.timeout"
+      :color="snackbar.color"
+      :style="`bottom: ${(index * 60) + 10}px`"
+      left
+      bottom
+    >
+      {{ snackbar.text }}
+      <v-btn text @click="snackbar.show = false">Close</v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -47,7 +60,7 @@ import { mapState } from "vuex";
 export default {
   name: "App",
   computed: {
-    ...mapState(["currentUser"])
+    ...mapState(["currentUser", "snackbars"])
   },
   components: {},
   mounted() {
@@ -59,9 +72,11 @@ export default {
       this.$store.dispatch("logoutUser");
     }
   },
-  data: () => ({
-    //
-  })
+  data() {
+    return {
+      //
+    };
+  }
 };
 </script>
 

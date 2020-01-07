@@ -59,7 +59,7 @@ const routes = [
       },
       {
         path: "videos/new",
-        name: "video-create",
+        name: "admin-video-create",
         component: AdminVideoCreate
       }
     ]

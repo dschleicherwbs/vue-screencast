@@ -8,9 +8,9 @@ export default new Vuex.Store({
   state: {
     videos: [],
     tags: [],
-    playedVideos: [],
     users: [],
-    currentUser: { name: "John Doe" }
+    currentUser: {},
+    snackbars: []
   },
   mutations: {
     SET_VIDEOS(state, videos) {
@@ -20,21 +20,20 @@ export default new Vuex.Store({
       state.tags = tags;
     },
     SET_PLAYED_VIDEOS(state, playedVideos) {
-      state.playedVideos = playedVideos;
+      Vue.set(state.currentUser, "playedVideos", playedVideos);
     },
     SET_USERS(state, users) {
       state.users = users;
     },
     MARK_VIDEO_PLAYED(state, videoId) {
-      // state.playedVideos.push(videoId.toString());
-      const newPlayedVideos = state.playedVideos.concat(videoId);
-      state.playedVideos = newPlayedVideos;
-      window.localStorage.playedVideos = JSON.stringify(newPlayedVideos);
+      const newPlayedVideos = state.currentUser.playedVideos.concat(videoId);
+      state.currentUser.playedVideos = newPlayedVideos;
     },
     UNMARK_VIDEO_PLAYED(state, videoId) {
-      const newPlayedVideos = state.playedVideos.filter(id => id != videoId);
-      state.playedVideos = newPlayedVideos;
-      window.localStorage.playedVideos = JSON.stringify(newPlayedVideos);
+      const newPlayedVideos = state.currentUser.playedVideos.filter(
+        id => id != videoId
+      );
+      state.currentUser.playedVideos = newPlayedVideos;
     },
     ADD_VIDEO(state, video) {
       const newVideos = state.videos.concat(video);
@@ -58,6 +57,9 @@ export default new Vuex.Store({
     SET_CURRENT_USER(state, user) {
       state.currentUser = user;
       window.localStorage.currentUser = JSON.stringify(user);
+    },
+    SET_SNACKBAR(state, snackbar) {
+      state.snackbars = state.snackbars.concat(snackbar);
     }
   },
   actions: {
@@ -82,9 +84,6 @@ export default new Vuex.Store({
         "SET_TAGS",
         tags.map(t => t.attributes)
       );
-
-      let playedVideos = JSON.parse(window.localStorage.playedVideos);
-      commit("SET_PLAYED_VIDEOS", playedVideos);
     },
     async loadUsers({ commit }) {
       const response = await Api().get("/users");
@@ -95,12 +94,24 @@ export default new Vuex.Store({
         users.map(u => u.attributes)
       );
     },
-    async loadCurrentUser({ commit }) {
+    async loadCurrentUser({ commit, dispatch }) {
       const user = JSON.parse(window.localStorage.currentUser);
       commit("SET_CURRENT_USER", user);
+      dispatch("loadPlayedVideos", user.id);
     },
-    markPlayed({ commit }, videoId) {
-      commit("MARK_VIDEO_PLAYED", videoId);
+    async loadPlayedVideos({ commit }, userId) {
+      const response = await Api().get(`/users/${userId}`);
+      const user = response.data.data.attributes;
+
+      commit("SET_PLAYED_VIDEOS", user.playedVideos);
+    },
+    async markPlayed({ commit, state }, videoId) {
+      if (state.currentUser.id) {
+        commit("MARK_VIDEO_PLAYED", videoId);
+        await Api().post("/video_plays", {
+          video_id: videoId
+        });
+      }
     },
     unmarkPlayed({ commit }, videoId) {
       commit("UNMARK_VIDEO_PLAYED", videoId);
@@ -128,12 +139,15 @@ export default new Vuex.Store({
     logoutUser({ commit }) {
       commit("LOGOUT_USER");
     },
-    async loginUser({ commit }, loginInfo) {
+    async loginUser({ commit, dispatch }, loginInfo) {
       try {
         const response = await Api().post("/sessions", loginInfo);
         const user = response.data.data.attributes;
 
+        user.id = response.data.data.id;
+
         commit("SET_CURRENT_USER", user);
+        dispatch("loadPlayedVideos", user.id);
 
         return user;
       } catch {
@@ -142,12 +156,14 @@ export default new Vuex.Store({
         };
       }
     },
-    async registerUser({ commit }, registrationInfo) {
+    async registerUser({ commit, dispatch }, registrationInfo) {
       try {
         const response = await Api().post("/users", registrationInfo);
         const user = response.data.data.attributes;
+        user.id = response.data.data.id;
 
         commit("SET_CURRENT_USER", user);
+        dispatch("loadPlayedVideos", user.id);
 
         return user;
       } catch {
@@ -155,10 +171,18 @@ export default new Vuex.Store({
           error: "Therre was an error. Please try again"
         };
       }
+    },
+    setSnackbar({ commit }, snackbar) {
+      snackbar.show = true;
+      snackbar.color = snackbar.color || "success";
+      snackbar.timeout = snackbar.timeout || 6000;
+      commit("SET_SNACKBAR", snackbar);
     }
   },
-
   getters: {
+    playedVideos: state => state.currentUser.playedVideos || [],
+    isPlayed: (state, getters) => videoId =>
+      getters.playedVideos.includes(videoId),
     getTags: state => id => state.tags.find(tag => tag.id == id)
   },
   modules: {}

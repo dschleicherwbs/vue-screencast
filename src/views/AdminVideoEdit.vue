@@ -29,6 +29,11 @@ export default {
   },
   data() {
     return {
+      snackbar: {
+        show: false,
+        color: "",
+        text: ""
+      },
       initVideoTitle: ""
     };
   },
@@ -38,7 +43,9 @@ export default {
   methods: {
     async saveVideo() {
       await this.$store.dispatch("editVideo", this.video);
-
+      this.$store.dispatch("setSnackbar", {
+        text: "Video successfully edited"
+      });
       this.$router.push({ name: "admin-video-list" });
     },
     endEdit() {

@@ -1,13 +1,6 @@
 <template>
   <div class="container">
     <h1 class="display-3">New Video</h1>
-    <!-- <form class="form">
-      <v-text-field v-model="video.name" label="Title" />
-      <v-textarea rows="4" v-model="video.description" label="Description" />
-      <v-text-field v-model="video.thumbnail" label="Thumbnail URL" />
-      <v-text-field v-model="video.videoUrl" label="Video URL" />
-      <v-btn @click.prevent="createVideo" color="primary" depressed>Add Video</v-btn>
-    </form>-->
     <VideoEditForm
       :video="video"
       :saveVideo="createVideo"
@@ -41,8 +34,9 @@ export default {
   methods: {
     async createVideo() {
       let savedVideo = await this.$store.dispatch("createVideo", this.video);
-      console.log(savedVideo);
-
+      this.$store.dispatch("setSnackbar", {
+        text: "Video successfully added"
+      });
       this.$router.push({ name: "video-watch", params: { id: savedVideo.id } });
     },
     endEdit() {

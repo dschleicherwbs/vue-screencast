@@ -1,6 +1,5 @@
 <template>
   <div>
-    Hello
     <div class="users" v-for="user in users" :key="user.id">
       <div>{{ user.name }}</div>
       <v-btn color="secondary" x-small depressed @click="loginUSer(user)">Login</v-btn>

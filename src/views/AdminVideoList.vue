@@ -1,25 +1,17 @@
 <template>
   <div class="container">
-    <h1 class="display-3">Admin Page</h1>
     <v-btn
       color="secondary"
       to="/admin/videos/new"
       class="thisButtonWantsToBeWhite"
       x-large
       depressed
-      >Add Video</v-btn
-    >
+    >Add Video</v-btn>
 
     <div class="admin-video-container">
-      <div
-        class="admin-video-container__item"
-        v-for="video in videos"
-        :key="video.id"
-      >
+      <div class="admin-video-container__item" v-for="video in videos" :key="video.id">
         <div class="admin-video-container__name">{{ video.name }}</div>
-        <div class="admin-video-container__description">
-          {{ video.description | abbreviate }}
-        </div>
+        <div class="admin-video-container__description">{{ video.description | abbreviate }}</div>
         <div class="btn-box">
           <v-btn
             depressed
@@ -65,6 +57,10 @@ export default {
   methods: {
     deleteVideo(video) {
       const response = confirm(`Are you sure you want to delete ${video.name}`);
+      this.$store.dispatch("setSnackbar", {
+        text: "Video successfully delted"
+      });
+
       if (response) {
         this.$store.dispatch("deleteVideo", video);
       }

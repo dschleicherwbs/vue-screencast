@@ -5,7 +5,7 @@
       <img :src="videoThumbnail" alt />
 
       <div class="video-card__header">
-        <div class="overline mt-2" v-if="isPlayed">
+        <div class="overline mt-2" v-if="isPlayed(video.id)">
           <font-awesome-icon icon="check" />&nbsp;watched
         </div>
         <h4>{{ video.name | placeholderTitle }}</h4>
@@ -17,17 +17,14 @@
 
 <script>
 import TagButtons from "./TagButtons";
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     TagButtons
   },
   computed: {
-    ...mapState(["playedVideos"]),
-    isPlayed() {
-      return this.playedVideos.includes(this.video.id);
-    },
+    ...mapGetters(["playedVideos", "isPlayed"]),
     videoThumbnail() {
       return this.checkURL(this.video.thumbnail)
         ? this.video.thumbnail
