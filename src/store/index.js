@@ -60,17 +60,24 @@ export default new Vuex.Store({
     },
     SET_SNACKBAR(state, snackbar) {
       state.snackbars = state.snackbars.concat(snackbar);
+    },
+    CONNECT_TAG_TO_VIDEO(state, { video, tag }) {
+      video.tag_ids = video.tag_ids.concat(tag.id.toString());
+      tag.video_ids = tag.video_ids.concat(video.id.toString());
+    },
+    DISCONNECT_TAG_FROM_VIDEO(state, { video, tag }) {
+      video.tag_ids = video.tag_ids.filter(tagId => tagId != tag.id);
+      tag.video_ids = tag.video_ids.filter(videoId => videoId != video.id);
+    },
+    CREATE_TAG(state, { tag }) {
+      state.tags = state.tags.concat(tag);
     }
   },
   actions: {
     async loadVideos({ commit }) {
       const response = await Api().get("/videos");
       const videos = response.data.data;
-      const tags = response.data.included.filter(i => i.type === "tags");
-      tags.forEach(t => {
-        t.attributes.id = t.id;
-        t.attributes.video_ids = t.relationships.videos.data.map(v => v.id);
-      });
+
       videos.forEach(v => {
         v.attributes.id = v.id;
         v.attributes.tag_ids = v.relationships.tags.data.map(t => t.id);
@@ -80,6 +87,14 @@ export default new Vuex.Store({
         "SET_VIDEOS",
         videos.map(v => v.attributes)
       );
+    },
+    async loadAllTags({ commit }) {
+      const response = await Api().get("/tags");
+      const tags = response.data.data;
+      tags.forEach(t => {
+        t.attributes.id = t.id;
+        t.attributes.video_ids = t.relationships.videos.data.map(v => v.id);
+      });
       commit(
         "SET_TAGS",
         tags.map(t => t.attributes)
@@ -177,6 +192,23 @@ export default new Vuex.Store({
       snackbar.color = snackbar.color || "success";
       snackbar.timeout = snackbar.timeout || 6000;
       commit("SET_SNACKBAR", snackbar);
+    },
+    connectTagToVideo({ commit }, { video, tag }) {
+      Api().post("video_tags", { video_id: video.id, tag_id: tag.id });
+      commit("CONNECT_TAG_TO_VIDEO", { video, tag });
+    },
+    async disconnectTagFromVideo({ commit }, { video, tag }) {
+      Api().post("video_tags/delete", { video_id: video.id, tag_id: tag.id });
+      commit("DISCONNECT_TAG_FROM_VIDEO", { video, tag });
+    },
+    async createTag({ commit }, { name }) {
+      const response = await Api().post("/tags", { name });
+      const createdTag = response.data.data.attributes;
+      createdTag.id = response.data.data.id;
+      createdTag.video_ids = [];
+
+      commit("CREATE_TAG", { tag: createdTag });
+      return createdTag;
     }
   },
   getters: {

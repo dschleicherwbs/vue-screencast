@@ -44,7 +44,7 @@ https://www.youtube.com/watch?v=4phclwjuPMg&list=PLPwpWyfm6JADRf8x1Jc0Da8R71WJyt
       :key="snackbar.text + Math.random()"
       :timeout="snackbar.timeout"
       :color="snackbar.color"
-      :style="`bottom: ${(index * 60) + 10}px`"
+      :style="`bottom: ${index * 60 + 10}px`"
       left
       bottom
     >
@@ -66,6 +66,7 @@ export default {
   mounted() {
     this.$store.dispatch("loadVideos");
     this.$store.dispatch("loadCurrentUser");
+    this.$store.dispatch("loadAllTags");
   },
   methods: {
     logoutUser() {
@@ -127,7 +128,7 @@ a:visited {
   line-height: 1.8;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  text-align: left;
   color: var(--font-color);
   padding: 4rem 5rem;
 }

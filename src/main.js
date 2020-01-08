@@ -11,13 +11,19 @@ import {
   faCaretSquareRight,
   faTrash,
   faEdit,
-  faSignOutAlt
+  faSignOutAlt,
+  faEye
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-[faCheck, faCaretSquareRight, faTrash, faEdit, faSignOutAlt].forEach(icon =>
-  library.add(icon)
-);
+[
+  faCheck,
+  faCaretSquareRight,
+  faTrash,
+  faEdit,
+  faSignOutAlt,
+  faEye
+].forEach(icon => library.add(icon));
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

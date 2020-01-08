@@ -1,0 +1,74 @@
+<template>
+  <v-container>
+    <div class="title">{{ video.name }}</div>
+    <div class v-html="video.description"></div>
+    <v-combobox
+      :items="tags"
+      item-text="name"
+      v-model="videoTags"
+      multiple
+      chips
+      deletable-chips
+      hide-selected
+      return-object
+    ></v-combobox>
+  </v-container>
+</template>
+
+<script>
+import { mapState, mapGetters } from "vuex";
+import _ from "lodash";
+
+export default {
+  created() {
+    this.$store.dispatch("loadAllTags");
+  },
+  components: {
+    //
+  },
+  computed: {
+    ...mapState(["videos", "tags"]),
+    ...mapGetters(["getTags"]),
+    video() {
+      const video = this.videos.find(
+        video => video.id == this.$route.params.id
+      );
+      return video;
+    },
+    videoTags: {
+      get() {
+        return this.video.tag_ids.map(id => this.getTags(id));
+      },
+      async set(newTags) {
+        const createdTag = newTags.find(t => typeof t == "string");
+        if (createdTag) {
+          const newTag = await this.$store.dispatch("createTag", {
+            name: createdTag
+          });
+          this.$store.dispatch("connectTagToVideo", {
+            tag: newTag,
+            video: this.video
+          });
+        } else {
+          const addedTags = _.differenceBy(newTags, this.videoTags, "id");
+          const removedTags = _.differenceBy(this.videoTags, newTags, "id");
+          if (addedTags.length > 0) {
+            this.$store.dispatch("connectTagToVideo", {
+              tag: addedTags[0],
+              video: this.video
+            });
+          }
+          if (removedTags.length > 0) {
+            this.$store.dispatch("disconnectTagFromVideo", {
+              tag: removedTags[0],
+              video: this.video
+            });
+          }
+        }
+      }
+    }
+  }
+};
+</script>
+
+<style></style>

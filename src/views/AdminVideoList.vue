@@ -14,22 +14,33 @@
         <div class="admin-video-container__description">{{ video.description | abbreviate }}</div>
         <div class="btn-box">
           <v-btn
-            depressed
+            icon
+            x-large
             color="secondary"
             class="thisButtonWantsToBeWhite"
-            :to="'/video/' + video.id"
+            :to="{ name: 'video-watch', params: { id: video.id }}"
           >
             <font-awesome-icon icon="caret-square-right" />
           </v-btn>
           <v-btn
-            depressed
+            icon
+            x-large
+            color="secondary"
+            class="thisButtonWantsToBeWhite"
+            :to="{ name: 'admin-video-show', params: { id: video.id }}"
+          >
+            <font-awesome-icon icon="eye" />
+          </v-btn>
+          <v-btn
+            icon
+            x-large
             color="accent"
             class="thisButtonWantsToBeWhite"
-            :to="`/admin/videos/${video.id}/edit/`"
+            :to="{ name: 'admin-video-edit', params: { id: video.id }}"
           >
             <font-awesome-icon icon="edit" />
           </v-btn>
-          <v-btn depressed color="error" @click="deleteVideo(video)">
+          <v-btn icon x-large color="error" @click="deleteVideo(video)">
             <font-awesome-icon icon="trash" />
           </v-btn>
         </div>
@@ -97,7 +108,6 @@ export default {
 }
 .btn-box {
   display: grid;
-  gap: 0.7rem;
   grid-auto-flow: column;
   justify-content: end;
   justify-items: center;

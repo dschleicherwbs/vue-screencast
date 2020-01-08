@@ -6,7 +6,9 @@ import TagVideoList from "../views/TagVideoList.vue";
 import AdminVideoCreate from "../views/AdminVideoCreate.vue";
 import AdminVideoList from "../views/AdminVideoList.vue";
 import AdminVideoEdit from "../views/AdminVideoEdit.vue";
+import AdminVideoShow from "../views/AdminVideoShow.vue";
 import AdminUserList from "../views/AdminUserList.vue";
+import AdminTagList from "../views/AdminTagList.vue";
 import UserLogin from "../views/UserLogin.vue";
 import UserRegistration from "../views/UserRegistration.vue";
 import Admin from "../views/Admin.vue";
@@ -53,6 +55,11 @@ const routes = [
         component: AdminUserList
       },
       {
+        path: "tags",
+        name: "admin-tag-list",
+        component: AdminTagList
+      },
+      {
         path: "videos/:id/edit",
         name: "admin-video-edit",
         component: AdminVideoEdit
@@ -61,6 +68,11 @@ const routes = [
         path: "videos/new",
         name: "admin-video-create",
         component: AdminVideoCreate
+      },
+      {
+        path: "videos/:id/show",
+        name: "admin-video-show",
+        component: AdminVideoShow
       }
     ]
   },
