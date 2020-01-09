@@ -37,8 +37,15 @@ export default {
     TagButtons
   },
   computed: {
-    ...mapGetters(["getTags", "playedVideos", "isPlayed"]),
-    ...mapState(["videos", "currentUser"]),
+    ...mapGetters({
+      getTags: "tags/get",
+      playedVideos: "users/playedVideos",
+      isPlayed: "users/videoIsPlayed"
+    }),
+    ...mapState({
+      videos: state => state.videos.videos,
+      currentUser: state => state.users.currentUser
+    }),
     video() {
       return this.videos.find(video => video.id == this.$route.params.id) || {};
     },
@@ -59,10 +66,10 @@ export default {
   },
   methods: {
     markPlayed() {
-      this.$store.dispatch("markPlayed", this.video.id);
+      this.$store.dispatch("users/markVideoPlayed", this.video.id);
     },
     unmarkPlayed() {
-      this.$store.dispatch("unmarkPlayed", this.video.id);
+      this.$store.dispatch("users/unmarkVideoPlayed", this.video.id);
     }
   }
 };

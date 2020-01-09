@@ -14,15 +14,15 @@ export default {
   },
   methods: {
     async loginUser(userInfo) {
-      const user = await this.$store.dispatch("loginUser", userInfo);
+      const user = await this.$store.dispatch("users/login", userInfo);
       const snackbar = {};
       if (user.error) {
         snackbar.text = user.error;
         snackbar.color = "error";
-        this.$store.dispatch("setSnackbar", snackbar);
+        this.$store.dispatch("snackbar/setSnackbar", snackbar);
       } else {
         snackbar.text = "Thank you for signing in, " + user.name;
-        this.$store.dispatch("setSnackbar", snackbar);
+        this.$store.dispatch("snackbar/setSnackbar", snackbar);
         if (user.admin) {
           this.$router.push("/admin/videos");
         } else {

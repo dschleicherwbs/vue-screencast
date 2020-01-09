@@ -19,7 +19,9 @@ export default {
     VideoEditForm
   },
   computed: {
-    ...mapState(["videos"]),
+    ...mapState({
+      videos: state => state.videos.videos
+    }),
     video() {
       const video = this.videos.find(
         video => video.id == this.$route.params.id
@@ -42,8 +44,8 @@ export default {
   },
   methods: {
     async saveVideo() {
-      await this.$store.dispatch("editVideo", this.video);
-      this.$store.dispatch("setSnackbar", {
+      await this.$store.dispatch("videos/edit", this.video);
+      this.$store.dispatch("snackbar/setSnackbar", {
         text: "Video successfully edited"
       });
       this.$router.push({ name: "admin-video-list" });

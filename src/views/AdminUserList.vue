@@ -12,15 +12,15 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState(["users"])
+    ...mapState({ users: state => state.users.users })
   },
   methods: {
     loginUSer(user) {
-      this.$store.dispatch("loginUser", user);
+      this.$store.dispatch("users/login", user);
     }
   },
   mounted() {
-    this.$store.dispatch("loadUsers");
+    this.$store.dispatch("users/loadAll");
   }
 };
 </script>

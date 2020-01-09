@@ -1,7 +1,3 @@
-//
-https://www.youtube.com/watch?v=4phclwjuPMg&list=PLPwpWyfm6JADRf8x1Jc0Da8R71WJyt-Jn&index=10
-// 15min
-
 <template>
   <v-app>
     <v-app-bar class="app-bar pl-12 pr-12" height="120px" app flat>
@@ -60,17 +56,20 @@ import { mapState } from "vuex";
 export default {
   name: "App",
   computed: {
-    ...mapState(["currentUser", "snackbars"])
+    ...mapState({
+      currentUser: state => state.users.currentUser,
+      snackbars: state => state.snackbar.snackbars
+    })
   },
   components: {},
   mounted() {
-    this.$store.dispatch("loadVideos");
-    this.$store.dispatch("loadCurrentUser");
-    this.$store.dispatch("loadAllTags");
+    this.$store.dispatch("videos/loadAll");
+    this.$store.dispatch("users/loadCurrent");
+    this.$store.dispatch("tags/loadAll");
   },
   methods: {
     logoutUser() {
-      this.$store.dispatch("logoutUser");
+      this.$store.dispatch("users/logout");
     }
   },
   data() {

@@ -24,7 +24,10 @@ export default {
     TagButtons
   },
   computed: {
-    ...mapGetters(["playedVideos", "isPlayed"]),
+    ...mapGetters({
+      playedVideos: "users/playedVideos",
+      isPlayed: "users/videoIsPlayed"
+    }),
     videoThumbnail() {
       return this.checkURL(this.video.thumbnail)
         ? this.video.thumbnail

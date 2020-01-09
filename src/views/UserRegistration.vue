@@ -14,7 +14,7 @@ export default {
   },
   methods: {
     async registerUser(userInfo) {
-      const user = await this.$store.dispatch("registerUser", userInfo);
+      const user = await this.$store.dispatch("users/register", userInfo);
       if (user.error) {
         alert(user.error);
       } else {

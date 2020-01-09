@@ -21,14 +21,19 @@ import _ from "lodash";
 
 export default {
   created() {
-    this.$store.dispatch("loadAllTags");
+    this.$store.dispatch("tags/loadAll");
   },
   components: {
     //
   },
   computed: {
-    ...mapState(["videos", "tags"]),
-    ...mapGetters(["getTags"]),
+    ...mapState({
+      videos: state => state.videos.videos,
+      tags: state => state.tags.tags
+    }),
+    ...mapGetters({
+      getTags: "tags/get"
+    }),
     video() {
       const video = this.videos.find(
         video => video.id == this.$route.params.id
@@ -42,10 +47,10 @@ export default {
       async set(newTags) {
         const createdTag = newTags.find(t => typeof t == "string");
         if (createdTag) {
-          const newTag = await this.$store.dispatch("createTag", {
+          const newTag = await this.$store.dispatch("tags/create", {
             name: createdTag
           });
-          this.$store.dispatch("connectTagToVideo", {
+          this.$store.dispatch("tags/connectToVideo", {
             tag: newTag,
             video: this.video
           });
@@ -53,13 +58,13 @@ export default {
           const addedTags = _.differenceBy(newTags, this.videoTags, "id");
           const removedTags = _.differenceBy(this.videoTags, newTags, "id");
           if (addedTags.length > 0) {
-            this.$store.dispatch("connectTagToVideo", {
+            this.$store.dispatch("tags/connectToVideo", {
               tag: addedTags[0],
               video: this.video
             });
           }
           if (removedTags.length > 0) {
-            this.$store.dispatch("disconnectTagFromVideo", {
+            this.$store.dispatch("tags/disconnectFromVideo", {
               tag: removedTags[0],
               video: this.video
             });

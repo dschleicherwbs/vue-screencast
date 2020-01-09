@@ -17,8 +17,12 @@ export default {
     VideoListVideo
   },
   computed: {
-    ...mapGetters(["getTags"]),
-    ...mapState(["videos"]),
+    ...mapGetters({
+      getTags: "tags/get"
+    }),
+    ...mapState({
+      videos: state => state.videos.videos
+    }),
     tag() {
       return this.getTags(this.$route.params.id);
     },

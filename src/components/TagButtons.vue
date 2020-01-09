@@ -8,7 +8,7 @@
       text
       :block="false"
       small
-    >{{ '#' + getTags(tag_id).name }}</v-btn>
+    >{{ '#' + get(tag_id).name }}</v-btn>
   </div>
 </template>
 
@@ -18,7 +18,9 @@ import { mapGetters } from "vuex";
 export default {
   name: "TagButtons",
   computed: {
-    ...mapGetters(["getTags"])
+    ...mapGetters({
+      get: "tags/get"
+    })
   },
   props: {
     tag_ids: {
